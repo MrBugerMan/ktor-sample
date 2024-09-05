@@ -1,5 +1,6 @@
 package com.example.plugins
 
+import com.example.model.ExposedUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.*
@@ -7,8 +8,6 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
-@Serializable
-data class ExposedUser(val email: String, val password: String)
 
 class UserService(database: Database) {
     object Users : Table() {

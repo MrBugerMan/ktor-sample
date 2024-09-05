@@ -1,5 +1,7 @@
 package com.example.plugins
 
+import com.example.model.ExposedUser
+import com.example.plugins.JwtConfig.makeToken
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -19,7 +21,8 @@ fun Application.configureRouting(userService: UserService) {
         post("/users") {
             val user = call.receive<ExposedUser>()
             val id = userService.create(user)
-            call.respond(HttpStatusCode.Created, id)
+            //val token = makeToken(user.email)
+            call.respond(HttpStatusCode.Created, "$id --!!!-- $user --!!!-- ${makeToken(user.email)}")
         }
 
         // Protected routes

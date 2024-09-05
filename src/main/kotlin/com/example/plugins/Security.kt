@@ -27,9 +27,9 @@ fun Application.configureSecurity() {
 }
 
 object JwtConfig {
-    private const val secret = "your-secret-key"
-    internal const val issuer = "your-issuer"
-    internal const val audience = "your-audience"
+    private const val secret = "key"
+    internal const val issuer = "issuer"
+    internal const val audience = "audience"
     private const val validityInMs = 36_000_00 * 10 // 10 hours
 
     val algorithm = Algorithm.HMAC256(secret)
@@ -40,11 +40,13 @@ object JwtConfig {
         .withAudience(audience)
         .withClaim("email", email)
         .sign(algorithm)
+
+    fun isTokenValid(payload: DecodedJWT): Boolean {
+        val expiresAt = payload.expiresAt
+        return expiresAt != null && expiresAt.after(Date()) && payload.audience.contains(JwtConfig.audience)
+    }
 }
 
-fun isTokenValid(payload: DecodedJWT): Boolean {
-    val expiresAt = payload.expiresAt
-    return expiresAt != null && expiresAt.after(Date()) && payload.audience.contains(JwtConfig.audience)
-}
+
 
 
